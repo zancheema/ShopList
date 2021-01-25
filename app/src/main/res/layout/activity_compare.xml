@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".CompareActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        >
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Shop Names to Compare"
+        android:layout_margin="16dp"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        />
+
+
+
+        <Spinner
+            android:id="@+id/spinnerShop1"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="16dp"
+            />
+
+        <Spinner
+            android:id="@+id/spinnerShop2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="16dp"
+            />
+
+
+
+    <Button
+
+        android:id="@+id/btnCompareList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginTop="32dp"
+        android:text="Compare"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@android:color/white"
+        />
+
+
+
+
+
+            <TextView
+                android:id="@+id/textView_shop1"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               android:gravity="center"
+
+
+
+                />
+
+                <TableLayout
+                    android:id="@+id/table_shop1"
+                   android:layout_gravity="center"
+                    android:layout_margin="16dp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+
+                    android:layout_height="wrap_content"/>
+
+
+
+
+
+            <TextView
+                android:id="@+id/textView_shop2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:textSize="16sp"
+                android:gravity="center"
+
+
+                />
+
+            <TableLayout
+                android:id="@+id/table_shop2"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/text_result"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_margin="16dp"
+                android:textSize="14sp"
+                android:textColor="@color/colorGreen"
+                android:layout_height="wrap_content"/>
+
+
+
+
+
+
+    </LinearLayout>
+</ScrollView>
