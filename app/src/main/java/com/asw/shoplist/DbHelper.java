@@ -26,7 +26,12 @@ public class DbHelper extends SQLiteOpenHelper {
     private SQLiteDatabase db;
 
     //String variables which holds create and drop table query
-    private String CREATE_LIST_TABLE ="CREATE TABLE  " + Table_list + " (" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_SHOPNAME + " VARCHAR, " + KEY_ITEMNAME + " VARCHAR, " + KEY_ITEMPRICE + " VARCHAR)";
+    private String CREATE_LIST_TABLE ="CREATE TABLE  " + Table_list + " ("
+            + KEY_ID + " INTEGER PRIMARY KEY, " +
+            KEY_SHOPNAME + " VARCHAR, " +
+            "" + KEY_ITEMNAME +
+            " VARCHAR, " + KEY_ITEMPRICE + " VARCHAR," +
+            "creation_time DATETIME DEFAULT CURRENT_TIMESTAMP)";
     private String CREATE_SHOP_TABLE ="CREATE TABLE  " + Table_shop + " (" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_SHOPNAME + " VARCHAR)";
     private String DROP_LIST_TABLE = "DROP TABLE IF EXISTS " + Table_list;
     private String DROP_SHOP_TABLE = "DROP TABLE IF EXISTS " + Table_shop;
@@ -127,6 +132,16 @@ public class DbHelper extends SQLiteOpenHelper {
     public Cursor getAllShops() {
         db = this.getReadableDatabase();
 
-        return db.rawQuery("SELECT * FROM " + Table_list, null);
+        return db.query(
+                Table_list,
+                new String[]{"shop_name", "item_price"},
+                null,
+                null,
+                null,
+                null,
+                "creation_time ASC"
+        );
+
+//        return db.rawQuery("SELECT * FROM " + Table_list, null);
     }
 }
