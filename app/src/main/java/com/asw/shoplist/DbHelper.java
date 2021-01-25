@@ -123,4 +123,10 @@ public class DbHelper extends SQLiteOpenHelper {
 
         return cursor;
     }
+
+    public Cursor getAllShops() {
+        db = this.getReadableDatabase();
+
+        return db.rawQuery("SELECT * FROM " + Table_list, null);
+    }
 }
