@@ -11,15 +11,17 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ShopsListAdapter extends ListAdapter<Shop, ShopsListAdapter.ViewHolder> {
+    private final OnClickItemListener listener;
 
-    public ShopsListAdapter() {
+    public ShopsListAdapter(OnClickItemListener listener) {
         super(new ShopItemsDiffUtil());
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return ViewHolder.from(parent);
+        return ViewHolder.from(parent, listener);
     }
 
     @Override
@@ -28,23 +30,31 @@ public class ShopsListAdapter extends ListAdapter<Shop, ShopsListAdapter.ViewHol
     }
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {
-        private ViewHolder(View itemView) {
+        private final OnClickItemListener listener;
+
+        private ViewHolder(View itemView, OnClickItemListener listener) {
             super(itemView);
+            this.listener = listener;
         }
 
         public void bind(Shop shop) {
-            TextView price = itemView.findViewById(R.id.itemPrice);
+            TextView price = itemView.findViewById(R.id.totalItemsPrice);
             TextView name = itemView.findViewById(R.id.shopName);
             TextView date = itemView.findViewById(R.id.shopDate);
+
+            // set data
             price.setText("€ " + shop.getTotalPrice());
             name.setText(shop.getName());
             date.setText("Dated: " + shop.getDate());
+
+            // set listeners
+            name.setOnClickListener((v) -> listener.onClickName(shop.getName()));
         }
 
-        public static ViewHolder from(ViewGroup parent) {
+        public static ViewHolder from(ViewGroup parent, OnClickItemListener listener) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View itemView = inflater.inflate(R.layout.shop_list_item, parent, false);
-            return new ViewHolder(itemView);
+            return new ViewHolder(itemView, listener);
         }
     }
 
@@ -58,5 +68,9 @@ public class ShopsListAdapter extends ListAdapter<Shop, ShopsListAdapter.ViewHol
         public boolean areContentsTheSame(@NonNull Shop oldItem, @NonNull Shop newItem) {
             return oldItem.equals(newItem);
         }
+    }
+
+    public interface OnClickItemListener {
+        void onClickName(String name);
     }
 }
