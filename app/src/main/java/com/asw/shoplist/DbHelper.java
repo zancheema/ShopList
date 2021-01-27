@@ -137,7 +137,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "SELECT " +
                         KEY_SHOPNAME + ", " +
                         "SUM(" + KEY_ITEMPRICE + ") AS " + KEY_ITEMPRICE + ", " +
-                        KEY_CREATION_TIME +
+                        "MIN(" + KEY_CREATION_TIME + ") AS " + KEY_CREATION_TIME +
                         " FROM " + Table_list +
                         " GROUP BY " + KEY_SHOPNAME +
                         " ORDER BY " + KEY_CREATION_TIME,

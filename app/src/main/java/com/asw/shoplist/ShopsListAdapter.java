@@ -35,8 +35,10 @@ public class ShopsListAdapter extends ListAdapter<Shop, ShopsListAdapter.ViewHol
         public void bind(Shop shop) {
             TextView price = itemView.findViewById(R.id.itemPrice);
             TextView name = itemView.findViewById(R.id.shopName);
+            TextView date = itemView.findViewById(R.id.shopDate);
             price.setText("€ " + shop.getTotalPrice());
-            name.setText(shop.getName() + "");
+            name.setText(shop.getName());
+            date.setText("Dated: " + shop.getDate());
         }
 
         public static ViewHolder from(ViewGroup parent) {
