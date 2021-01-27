@@ -43,7 +43,7 @@ public class AddListActivity extends AppCompatActivity {
                 //Getting user entered values from edittext to string variables
                 String shopeName = edtShopName.getText().toString();
                 String itemname = edtItemName.getText().toString();
-                String itemprice = edtItemPrice.getText().toString();
+                double itemprice = Double.parseDouble(edtItemPrice.getText().toString());
 
                 //checks whether user entered all avlues
                 if (!TextUtils.isEmpty(edtShopName.getText()) && !TextUtils.isEmpty(edtItemName.getText()) && !TextUtils.isEmpty(edtItemPrice.getText())) {

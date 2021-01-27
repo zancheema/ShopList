@@ -6,10 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 
 //This class is to Handle Database Operations
 
@@ -20,21 +19,23 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String Table_list = "list_table";
     private static final String Table_shop = "shop_table";
     private static final String KEY_SHOPNAME = "shop_name";
-    private static final String KEY_ITEMNAME ="item_name";
+    private static final String KEY_ITEMNAME = "item_name";
     private static final String KEY_ITEMPRICE = "item_price";
+    private static final String KEY_CREATION_TIME = "creation_time";
     private static final String KEY_ID = "iD";
     private SQLiteDatabase db;
 
     //String variables which holds create and drop table query
-    private String CREATE_LIST_TABLE ="CREATE TABLE  " + Table_list + " ("
+    private String CREATE_LIST_TABLE = "CREATE TABLE  " + Table_list + " ("
             + KEY_ID + " INTEGER PRIMARY KEY, " +
             KEY_SHOPNAME + " VARCHAR, " +
-            "" + KEY_ITEMNAME +
-            " VARCHAR, " + KEY_ITEMPRICE + " VARCHAR," +
-            "creation_time DATETIME DEFAULT CURRENT_TIMESTAMP)";
-    private String CREATE_SHOP_TABLE ="CREATE TABLE  " + Table_shop + " (" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_SHOPNAME + " VARCHAR)";
+            KEY_ITEMNAME + " VARCHAR, " +
+            KEY_ITEMPRICE + " NUMERIC(10, 2)," +
+            KEY_CREATION_TIME + " INTEGER NOT NULL)";
+    private String CREATE_SHOP_TABLE = "CREATE TABLE  " + Table_shop + " (" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_SHOPNAME + " VARCHAR)";
     private String DROP_LIST_TABLE = "DROP TABLE IF EXISTS " + Table_list;
     private String DROP_SHOP_TABLE = "DROP TABLE IF EXISTS " + Table_shop;
+
     public DbHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -56,20 +57,19 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     //This function is to add details in List table
-    public void addList(String shopname,String itemname,String itemprice){
+    public void addList(String shopname, String itemname, double itemprice) {
         db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(KEY_SHOPNAME,shopname);
-        cv.put(KEY_ITEMNAME,itemname);
-        cv.put(KEY_ITEMPRICE,itemprice);
-        db.insert(Table_list,null,cv);
+        cv.put(KEY_SHOPNAME, shopname);
+        cv.put(KEY_ITEMNAME, itemname);
+        cv.put(KEY_ITEMPRICE, itemprice);
+        cv.put(KEY_CREATION_TIME, System.currentTimeMillis());
+        db.insert(Table_list, null, cv);
         db.close();
-
-
     }
 
     //This function is to Check whether shop name is already there in the database or not
-    public boolean shopExists(String shopname){
+    public boolean shopExists(String shopname) {
         db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + Table_shop, null);
         ArrayList<String> shopnames = new ArrayList<>();
@@ -100,16 +100,16 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     //This function is to add shop name in the Shop table
-    public void addShop(String shopname){
+    public void addShop(String shopname) {
         db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_SHOPNAME,shopname);
-        db.insert(Table_shop,null,contentValues);
+        contentValues.put(KEY_SHOPNAME, shopname);
+        db.insert(Table_shop, null, contentValues);
         db.close();
     }
 
     //This function is to get shop names from shop table and return to cursor to the class
-    public Cursor getShopNames(){
+    public Cursor getShopNames() {
 
         db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + Table_shop, null);
@@ -121,10 +121,10 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     //This function is to get List details with shop name from List table and return to cursor to the class
-    public Cursor getShopData(String shopname){
+    public Cursor getShopData(String shopname) {
         db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + Table_list + " WHERE TRIM(shop_name) = '" + shopname.trim() + "'",null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Table_list + " WHERE TRIM(shop_name) = '" + shopname.trim() + "'", null);
 
         return cursor;
     }
@@ -132,16 +132,15 @@ public class DbHelper extends SQLiteOpenHelper {
     public Cursor getAllShops() {
         db = this.getReadableDatabase();
 
-        return db.query(
-                Table_list,
-                new String[]{"shop_name", "item_price"},
-                null,
-                null,
-                null,
-                null,
-                "creation_time ASC"
+        return db.rawQuery(
+                "SELECT " +
+                        KEY_SHOPNAME + ", " +
+                        "SUM(" + KEY_ITEMPRICE + ") AS " + KEY_ITEMPRICE + ", " +
+                        KEY_CREATION_TIME +
+                        " FROM " + Table_list +
+                        " GROUP BY " + KEY_SHOPNAME +
+                        " ORDER BY " + KEY_CREATION_TIME,
+                null
         );
-
-//        return db.rawQuery("SELECT * FROM " + Table_list, null);
     }
 }
