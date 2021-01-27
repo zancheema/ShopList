@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 //This class is to Handle Database Operations
@@ -63,7 +64,7 @@ public class DbHelper extends SQLiteOpenHelper {
         cv.put(KEY_SHOPNAME, shopname);
         cv.put(KEY_ITEMNAME, itemname);
         cv.put(KEY_ITEMPRICE, itemprice);
-        cv.put(KEY_CREATION_TIME, System.currentTimeMillis());
+        cv.put(KEY_CREATION_TIME, LocalDate.now().toEpochDay());
         db.insert(Table_list, null, cv);
         db.close();
     }
